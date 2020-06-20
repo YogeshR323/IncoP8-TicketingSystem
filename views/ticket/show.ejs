@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include('../shared/head', {css: ['details', 'navbar']}) %>
+	<body>
+		<%- include('../shared/navbar', {}) %>
+		<div class="details">
+			<h1>Details Ticket</h1>
+			<h2>Id : <%= ticket.id %></h2>
+			<h2>Title : <%= ticket.title %></h2>
+			<h2>Description : <%= ticket.description %></h2>
+			<h2>
+				Created by :
+				<a href="mailto:<%= ticket.creator.email %>"
+					><%= ticket.creator.email %></a
+				>
+			</h2>
+			<h2>Responsible : <%= ticket.responsible %></h2>
+			<h2>Priority : <%= ticket.priority %></h2>
+			<h2>Status : <%= ticket.completed ? "Solved" : "In Progress" %></h2>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,13 @@
+<nav>
+	<ul>
+		<%if (typeof(user) == 'undefined') { %>
+		<a href="/user/login" class="nav-link">Log In</a>
+		<a href="/user/signup" class="nav-link">Sign Up</a>
+		<% } else { %>
+		<a><%= user.email%></a>
+		<a href="/ticket" class="nav-link">Tickets</a>
+		<a href="/ticket/create" class="nav-link">Create Ticket</a>
+		<a href="/user/signout" class="nav-link">Log Out</a>
+		<% } %>
+	</ul>
+</nav>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include('../shared/head', {css: ['index', 'navbar']}) %>
+	<body>
+		<%- include('../shared/navbar', {}) %>
+		<div>
+			<h1>List of tickets</h1>
+			<table>
+				<thead>
+					<tr>
+						<th class="idTicket">Ticket Title</th>
+						<th class="createdBy">Created By</th>
+						<th class="showTicket">Show</th>
+						<th class="editTicket">Edit</th>
+						<th class="ticketStatus">Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% for (index = 0; index < tickets.length; index++) { %> <% const
+					ticket = tickets[index] %>
+					<tr key="{index}">
+						<td><%= ticket.title %></td>
+						<td>
+							<a href="mailto:<%= ticket.creator.email %>" class="nav-link"
+								><%= ticket.creator.email %></a
+							>
+						</td>
+						<td>
+							<a href="/ticket/<%= ticket._id %>" class="nav-link">Show</a>
+						</td>
+						<td>
+							<a href="/ticket/<%= ticket._id %>/edit" class="nav-link">Edit</a>
+						</td>
+						<% if (ticket.completed) { %>
+						<td><img src="/images/tick-mark.png" /></td>
+						<% } else { %>
+						<td><img src="/images/construction-48.png" /></td>
+						<% } %>
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
