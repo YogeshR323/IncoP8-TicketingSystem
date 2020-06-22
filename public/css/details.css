@@ -7,3 +7,96 @@
 	margin-left: 0;
 	text-align: left;
 }
+/*****************************************************/
+/*****************************************************/
+/****************** comment fields *******************/
+/*****************************************************/
+/*****************************************************/
+.formLabel,
+label,
+input,
+textarea {
+	display: block;
+	text-align: left;
+	width: 98%;
+	border: 0;
+	outline: 0;
+
+	color: #5c5b5b;
+	font-family: 'AvenirNext-Medium';
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 35px;
+}
+input,
+textarea {
+	margin-bottom: 20px;
+	padding: 10px 5px;
+	border: 1px solid;
+}
+textarea {
+	height: 115px;
+}
+button {
+	position: relative;
+	margin: 0 auto;
+	display: block;
+
+	max-width: 332px;
+	max-height: 77px;
+	width: 100%;
+	height: auto;
+	border-radius: 10px;
+	background: #6a7b8b;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+	color: #ffffff;
+	font-family: 'AvenirNext-Bold';
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 35px;
+	text-align: center;
+}
+.commentContainer {
+	margin-left: 70px;
+	margin-right: 70px;
+	margin-top: 10px;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.comments-item-head {
+	position: relative;
+	color: #80807f;
+}
+.comments-item-head .post-divider {
+	color: #2e2e2e;
+}
+
+.comment-item-author x {
+	font-weight: bold;
+	color: #b80c2d;
+}
+
+.comment-item-time {
+	margin: 10px 0;
+}
+
+.comment-item-text {
+}
+.clearfix {
+	*zoom: 1;
+	border: 1px solid black;
+	padding-left: 5px;
+}
+
+.clearfix:before,
+.clearfix:after {
+	display: table;
+	line-height: 0;
+	content: '';
+}
+
+.clearfix:after {
+	clear: both;
+}

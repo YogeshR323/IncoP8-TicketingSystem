@@ -8,15 +8,60 @@
 			<h2>Id : <%= ticket.id %></h2>
 			<h2>Title : <%= ticket.title %></h2>
 			<h2>Description : <%= ticket.description %></h2>
-			<h2>
-				Created by :
-				<a href="mailto:<%= ticket.creator.email %>"
-					><%= ticket.creator.email %></a
-				>
-			</h2>
 			<h2>Responsible : <%= ticket.responsible %></h2>
 			<h2>Priority : <%= ticket.priority %></h2>
-			<h2>Status : <%= ticket.completed ? "Solved" : "In Progress" %></h2>
+			<h2>Status : <%= ticket.completed ? "Resolved" : "In Progress" %></h2>
+		</div>
+		<div class="commentForm">
+			<form action="/ticket/comments" method="post">
+				<div class="form-group">
+					<label>Comments about this ticket </label>
+					<textarea
+						id="comment"
+						class="form-control"
+						type="text"
+						name="comment"
+						placeholder="Enter your comments here"
+						required
+					></textarea>
+				</div>
+				<div class="form-group">
+					<input
+						id="email"
+						class="form-control"
+						name="userEmail"
+						value="<%= user.email %>"
+						type="hidden"
+					/>
+					<input
+						id="email"
+						class="form-control"
+						name="ticketId"
+						value="<%= ticket.id %>"
+						type="hidden"
+					/>
+				</div>
+				<div class="col-md-12.text-center.mb-3">
+					<button type="submit">Submit Comment</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="commentContainer">
+			<div class="clearfix">
+			<% for (index = 0; index < ticket.comments.length; index++) { %> <% const
+			cmmnt = ticket.comments[index] %>
+
+			<div class="comments-item-head">
+				<div class="comment-item-author">
+					<x> <%= cmmnt.commentor %></x>
+					<span class="post-divider"> | | <%= cmmnt.updatedAt %> </span>
+				</div>
+			</div>
+			<div class="comment-item-text">
+				<p><%= cmmnt.comment %></p>
+			</div>
+			<% } %>
 		</div>
 	</body>
 </html>

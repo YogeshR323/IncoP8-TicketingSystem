@@ -5,14 +5,13 @@ function signup(req, res) {
         //The case where the email or the password is not submitted or null
         console.log(req.body);
         res.status(400).json({
-            "text": `Invalid request fields missing`
+            "text": "Invalid request"
         })
     } else {
         var user = {
             email: req.body.email,
             password: req.body.password,
             isAdmin: false
-
         }
         var findUser = new Promise(function (resolve, reject) {
             User.findOne({
@@ -103,8 +102,7 @@ function login(req, res) {
 }
 
 function loginForm(req, res) {
-    // res.send('hello')
-    res.render('account/login', {title: 'Sign in'});
+    res.status(200).render('account/login', {title: 'Sign in'});
 }
 
 function signout(req, res) {

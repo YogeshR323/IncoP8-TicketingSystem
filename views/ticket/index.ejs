@@ -10,8 +10,8 @@
 					<tr>
 						<th class="idTicket">Ticket Title</th>
 						<th class="createdBy">Created By</th>
-						<th class="showTicket">Show</th>
-						<th class="editTicket">Edit</th>
+						<th class="showTicket">Show Ticket</th>
+						<th class="editTicket">Edit Ticket</th>
 						<th class="ticketStatus">Status</th>
 					</tr>
 				</thead>
@@ -21,8 +21,8 @@
 					<tr key="{index}">
 						<td><%= ticket.title %></td>
 						<td>
-							<a href="mailto:<%= ticket.creator.email %>" class="nav-link"
-								><%= ticket.creator.email %></a
+							<a href="mailto:<%= ticket.creatorEmail %>" class="nav-link"
+								><%= ticket.creatorEmail %></a
 							>
 						</td>
 						<td>

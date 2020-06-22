@@ -1,26 +1,28 @@
 const Ticket = require('../../schema/schemaTicket.js');
-const { mongo, Mongoose } = require('mongoose');
+const { CLIEngine } = require('eslint');
 const mongoose = require('mongoose')
 
 function create(req, res) {
 	if (!req.body.description || !req.body.responsible || !req.body.priority) {
 		res.status(400).json({
-			"text": "Invalid request; all fields needs to be filled"
+			"text": "Invalid request"
 		})
 	} else {
+		console.log(req.user)
 		var ticket = {
 			title: req.body.title,
 			description: req.body.description,
 			responsible: req.body.responsible,
 			priority: req.body.priority,
-			creator: mongoose.Types.ObjectId(req.user._id)
+			creatorEmail: req.user.email,
+			comments: {commentor: req.user.email, comment: "Ticket created"}
 		}
 
 		var _t = new Ticket(ticket);
 		_t.save(function (err, ticket) {
 			if (err) {
 				res.status(500).json({
-					"text": "Internal error"
+					"text": `Internal error ${err}`
 				})
 			} else {
 				res.redirect(`${ticket.getId()}`);
@@ -36,11 +38,11 @@ function createForm(req, res) {
 function show(req, res) {
 	if (!req.params.id) {
 		res.status(400).json({
-			"text": "Invalid request; no id passed"
+			"text": "Invalid request"
 		})
 	} else {
 		var findTicket = new Promise(function (resolve, reject) {
-			Ticket.findById(req.params.id, function (err, result) {
+			Ticket.findById(req.params.id,  function (err, result) {
 				if (err) {
 					reject(500);
 				} else {
@@ -50,7 +52,7 @@ function show(req, res) {
 						reject(200)
 					}
 				}
-			}).populate("creator", "email")
+			})
 		})
 
 		findTicket.then(function (ticket) {
@@ -59,7 +61,7 @@ function show(req, res) {
 			switch (error) {
 				case 500:
 					res.status(500).json({
-						"text": "Internal error"
+						"text": `Internal error ${error}`
 					})
 					break;
 				case 200:
@@ -69,7 +71,7 @@ function show(req, res) {
 					break;
 				default:
 					res.status(500).json({
-						"text": "Internal error"
+						"text": `Internal error ${error}`
 					})
 			}
 		})
@@ -79,7 +81,7 @@ function show(req, res) {
 function edit(req, res) {
 	if (!req.params.id) {
 		res.status(400).json({
-			"text": "Invalid request; no id passed"
+			"text": "Invalid request"
 		})
 	} else {
 		var findTicket = new Promise(function (resolve, reject) {
@@ -102,7 +104,7 @@ function edit(req, res) {
 			switch (error) {
 				case 500:
 					res.status(500).json({
-						"text": "Internal error"
+						"text": `Internal error ${error}`
 					})
 					break;
 				case 200:
@@ -112,7 +114,7 @@ function edit(req, res) {
 					break;
 				default:
 					res.status(500).json({
-						"text": "Internal error"
+						"text": `Internal error ${error}`
 					})
 			}
 		})
@@ -120,10 +122,10 @@ function edit(req, res) {
 }
 
 function update(req, res) {
-	console.log(req.body);
+	// console.log(req.body);
 	if (!req.params.id || !req.body.description || !req.body.responsible || !req.body.priority) {
 		res.status(400).json({
-			"text": "Invalid request; not all fields filled"
+			"text": "Invalid request"
 		})
 	} else {
 		var findTicket = new Promise(function (resolve, reject) {
@@ -148,7 +150,7 @@ function update(req, res) {
 			switch (error) {
 				case 500:
 					res.status(500).json({
-						"text": "Internal error"
+						"text": `Internal error ${error}`
 					})
 					break;
 				case 200:
@@ -158,7 +160,7 @@ function update(req, res) {
 					break;
 				default:
 					res.status(500).json({
-						"text": "Internal error"
+						"text": `Internal error ${error}`
 					})
 			}
 		})
@@ -177,23 +179,16 @@ function list(req, res) {
 					reject(200)
 				}
 			}
-		}).populate('creator', 'email').exec(
-			function (err, tickets) {
-				if (err) console.log(err)
-				else  tickets.forEach( (ticket, index) => 
-					console.log(ticket))
-			})
+		})
 	})
 
-
 	findTicket.then(function (tickets) {
-		// console.log(tickets)
 		res.status(200).render('ticket/index', {title: 'List of tickets', tickets, user: req.user});
 	}, function (error) {
 		switch (error) {
 			case 500:
 				res.status(500).json({
-					"text": "Internal error"
+					"text": `Internal error ${error}`
 				})
 				break;
 			case 200:
@@ -203,11 +198,67 @@ function list(req, res) {
 				break;
 			default:
 				res.status(500).json({
-					"text": "Internal error"
+					"text": `Internal error ${error}`
 				})
 		}
 	})
 }
+
+exports.commentPost =  (req, res, next) => {
+	const { userEmail, ticketId, comment } = req.body
+	// console.log(req.body)
+	if ( !ticketId || !comment || !userEmail ) {
+		res.status(400).json({
+			"text": "Invalid request"
+		})
+	} else {
+		var findTicket = new Promise(function (resolve, reject) {
+			
+			Ticket.findOne({_id: ticketId}, function (err, result) {
+
+				if (err) {
+					reject(500);
+				} else {
+					if (result) {
+
+						resolve(result)
+					} else {
+						reject(200)
+					}
+				}
+			})
+		})
+			
+		findTicket.then(function (ticket) {
+			ticket.comments.push({comment: comment, commentor: userEmail})
+			ticket.save()
+			// res.redirect(`../${ticket.getId()}`);
+
+			res.status(200).redirect(`/ticket/${ticket.getId()}`);
+
+		}, function (error) {
+			switch (error) {
+				case 500:
+					console.log({
+						"text": `Internal error 1 ${error}`
+					})
+					break;
+				case 200:
+					console.log({
+						"text": "The ticket does not exist"
+					})
+					break;
+				default:
+					console.log({
+						"text": `Internal error 2 ${error}`
+					})
+			}
+		})
+			}
+	
+	res.redirect('back');
+}
+
 
 exports.create = create;
 exports.createForm = createForm;

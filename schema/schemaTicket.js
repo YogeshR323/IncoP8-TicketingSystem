@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
+let { Schema } = mongoose
 
 var commentSchema = mongoose.Schema({
-    creator: {
-        type: mongoose.Schema.Types.ObjectId,
+    commentor: {
+        type: String,
         required: true,
-        ref: 'User'
     },
     comment: {
         type: String,
         required: true
     }
-},{ timestamps: { createdAt: 'created_at' }})
+},{ timestamps: { createdAt: true, updatedat: false }})
 
 var ticketSchema = mongoose.Schema({
     title: {
@@ -23,25 +23,24 @@ var ticketSchema = mongoose.Schema({
 	},
 	responsible: {
         type: String,
-        required: true
+        required: false
     },
     priority: {
         type: String,
         required: true
     },
-    comment: {
-        type: [commentSchema]  
-    },
-    creator: {
-        type: mongoose.Schema.Types.ObjectId, 
-        required: true,
-        ref: 'User'
-    },
     completed: {
         type: Boolean,
         required: true,
         default: false
-    }
+    },
+    comments: {
+        type: [commentSchema]  
+    },
+    creatorEmail: {
+        type: String,
+        required: true
+    },
 },{ timestamps: { createdAt: 'created_at' }})
 
 

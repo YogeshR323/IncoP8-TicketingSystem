@@ -6,11 +6,6 @@ nav {
 	align-items: center;
 }
 
-nav ul {
-	top: 50%;
-	left: 50%;
-}
-
 nav a {
 	color: #fff;
 	font-weight: bold;

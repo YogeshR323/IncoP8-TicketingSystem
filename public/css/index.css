@@ -12,16 +12,10 @@ thead > tr > th {
 	width: 300px;
 }
 
-.showTicket,
-.editTicket {
+.showTicket, .editTicket {
 	width: 150px;
 }
 
-td,
-th {
+td, th {
 	text-align: center;
-}
-img {
-	width: 48px;
-	height: auto;
 }

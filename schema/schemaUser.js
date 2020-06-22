@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcrypt');
 
-
 var userSchema = mongoose.Schema({
 	email: {
 		type: String,
@@ -21,7 +20,6 @@ var userSchema = mongoose.Schema({
 		required: true
 	}
 },{ timestamps: { createdAt: 'created_at' }})
-
 
 userSchema.pre('save', function(next){
 	this.password = bcrypt.hashSync(this.password, config.saltRounds);
